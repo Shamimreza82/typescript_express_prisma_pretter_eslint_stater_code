@@ -1,15 +1,16 @@
 import "dotenv/config" // Loads variables from .env automatically
 import app from "./app.js"
+import { EnvConfig } from "./config/envConfigValidation.js"
+import { logger } from "./utils/logger.js"
 
 // 1. Use environment variables for the Port
 // 2. Default to 5000 if PORT is not defined
-const PORT = process.env.PORT || 5000
+const PORT = EnvConfig.PORT || 5000
 
 async function bootstrap() {
   try {
     const server = app.listen(PORT, () => {
-      console.log(`🚀 Server is running at http://localhost:${PORT}`)
-      console.log("👷 Press CTRL+C to stop")
+      logger.warn(`Server is running at http://localhost:${PORT}`)
     })
 
     // 3. Graceful Shutdown
@@ -17,7 +18,7 @@ async function bootstrap() {
     const exitHandler = () => {
       if (server) {
         server.close(() => {
-          console.log("Server closed")
+          logger.warn("Server closed")
           process.exit(1)
         })
       } else {
@@ -28,7 +29,7 @@ async function bootstrap() {
     process.on("SIGTERM", exitHandler)
     process.on("SIGINT", exitHandler)
   } catch (error) {
-    console.error("❌ Failed to start server:", error)
+    logger.error(`❌ Failed to start server: ${error}`)
   }
 }
 

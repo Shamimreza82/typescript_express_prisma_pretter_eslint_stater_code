@@ -1,7 +1,9 @@
+import { EnvConfig } from '../../config/envConfigValidation.js';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { type Request, type Response, type NextFunction } from "express"
-import { logger } from "../logger"
+import { logger } from "../logger.js"
+
 
 interface CustomError extends Error {
   statusCode?: number
@@ -16,7 +18,7 @@ export const globalErrorHandler = (
 ) => {
   const statusCode = err.statusCode || 500
   const message =
-    process.env.NODE_ENV === "production"
+    EnvConfig.NODE_ENV === "production"
       ? statusCode === 500
         ? "Internal Server Error"
         : err.message
@@ -36,6 +38,6 @@ export const globalErrorHandler = (
     success: false,
     message,
     errors:
-      process.env.NODE_ENV !== "production" ? err.errors || null : undefined,
+      EnvConfig.NODE_ENV !== "production" ? err.errors || null : undefined,
   })
 }
