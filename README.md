@@ -18,7 +18,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ```bash
 git clone <repository-url>
-cd new-folder-(6)
+cd typescript_express_prisma_pretter_eslint_stater_code
 ```
 
 ### 2. Install Dependencies
